@@ -35,7 +35,9 @@ public class MyTransportClient {
         try {
             client = TransportClient.builder().settings(settings).build()
 //                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.4.206"), 9300))
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.5.131"), 9300));
+//                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.146.129"), 9300));
+//                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("172.27.37.12"), 9300));
+                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("172.27.36.60"), 9300));
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -58,11 +60,11 @@ public class MyTransportClient {
         // on startup
 
         Settings settings = Settings.settingsBuilder()
-                .put("cluster.name", "lsy-cluseter").build();
+                .put("cluster.name", "iaas.log").build();
 //        Client client = null;
         client = TransportClient.builder().settings(settings).build()
-                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.5.131"), 9300))
-                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.5.131"), 9300));
+//                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.5.131"), 9300))
+                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.146.129"), 9300));
 
         // index
         IndexResponse response = client.prepareIndex("twitter", "tweet", "1")
