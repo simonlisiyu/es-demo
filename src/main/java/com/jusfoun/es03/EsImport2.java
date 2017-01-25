@@ -19,13 +19,16 @@ import java.util.HashMap;
  */
 public class EsImport2 {
     public static void main(String[] args) {
-        String index = "mjdos2";
+        String index = "mjdos";
         String type = "log";
         String fileName = "es";
-        if (args.length == 2) {
+        if (args.length == 3) {
             index = args[0];
             type = args[1];
             fileName = args[2];
+            System.out.println("index="+index);
+            System.out.println("type="+type);
+            System.out.println("fileName="+fileName);
         }
 
         Client client = MyTransportClient.client;

@@ -9,10 +9,15 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Iterator;
 
 /**
  * Created by lisiyu on 16/8/11.
@@ -85,18 +90,33 @@ public class TestSearchResponse {
 //                .execute()
 //                .actionGet();
 
-        String query = "{\"query_string\": {\"query\": \"weblog data4\"}}";
+        String query = "{\"query_string\": {\"query\": \"98.88\"}}";
         SearchRequestBuilder builder = client
-                .prepareSearch("flume-2016-08-10")
-                .setQuery(query)
+                .prepareSearch("t2")
+//                .setQuery(query)
+                .setQuery(QueryBuilders.termQuery("kw", "disk.io"))
+                .addAggregation(AggregationBuilders.terms("kw").field("kw"))
                 .addHighlightedField("*")
                 .setHighlighterRequireFieldMatch(false)
                 .setFrom(0).setSize(60).setExplain(true);
         SearchResponse response  = builder.execute().actionGet();
 
-        System.out.println(response.toString());
-        System.out.println(response.getHits().getAt(0).getSource());
-        System.out.println(response.getHits().getAt(0).getHighlightFields());
+//        System.out.println(response.toString());
+        System.out.println(response.getHits().getTotalHits());
+//        System.out.println(response.getAggregations().getAsMap().getOrDefault("kw",null));
+        StringTerms st = (StringTerms) response.getAggregations().getAsMap().getOrDefault("kw",null);
+        Iterator<Terms.Bucket> gradeBucketIt = st.getBuckets().iterator();
+        int i = 0;
+        while(gradeBucketIt.hasNext())
+        {
+            Terms.Bucket gradeBucket = gradeBucketIt.next();
+            System.out.println(gradeBucket.getKey() + "有" + gradeBucket.getDocCount() +"个。");
+            i++;
+        }
+        System.out.println("key="+i);
+//        System.out.println(response.getHits().getAt(0).getSource());
+//        System.out.println(response.getHits().getAt(1).getSource());
+//        System.out.println(response.getHits().getAt(0).getHighlightFields());
         client.close();
     }
 

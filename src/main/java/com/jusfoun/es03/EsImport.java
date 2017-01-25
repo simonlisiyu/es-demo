@@ -11,7 +11,7 @@ import java.io.*;
  */
 public class EsImport {
     public static void main(String[] args) {
-        String index = "mjdos2";
+        String index = "mjdos";
         String type = "log";
         String fileName = "es";
         if (args.length == 2) {
@@ -29,7 +29,7 @@ public class EsImport {
             int count = 0;
             //开启批量插入
             BulkRequestBuilder bulkRequest = client.prepareBulk();
-            while ((json = br.readLine()) != null) {
+            while (((json = br.readLine()) != null)) {
                 bulkRequest.add(client.prepareIndex(index, type).setSource(json));
                 //每一千条提交一次
                 if (count% 1000==0) {
