@@ -1,5 +1,6 @@
 package com.jusfoun.es03;
 
+import com.jusfoun.commons.IdGen;
 import com.jusfoun.es01.MyTransportClient;
 import org.elasticsearch.action.bulk.*;
 import org.elasticsearch.action.update.UpdateRequest;
@@ -66,6 +67,7 @@ public class EsImport2 {
                         BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(6000), 3))
                 .build();
 
+        String id = IdGen.uuid();
         try {
             //读取刚才导出的ES数据
             BufferedReader br = new BufferedReader(new FileReader(fileName));
@@ -73,7 +75,7 @@ public class EsImport2 {
             int count = 0;
 
             while ((json = br.readLine()) != null) {
-                UpdateRequest updateRequest = new UpdateRequest(index, type, ++count+"").doc(json);
+                UpdateRequest updateRequest = new UpdateRequest(index, type, id+(++count)).doc(json);
                 bulkProcessor.add(updateRequest.docAsUpsert(true));
             }
 

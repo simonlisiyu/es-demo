@@ -104,17 +104,17 @@ public class TestSearchResponse {
 //        System.out.println(response.toString());
         System.out.println(response.getHits().getTotalHits());
 //        System.out.println(response.getAggregations().getAsMap().getOrDefault("kw",null));
-        StringTerms st = (StringTerms) response.getAggregations().getAsMap().getOrDefault("kw",null);
-        Iterator<Terms.Bucket> gradeBucketIt = st.getBuckets().iterator();
-        int i = 0;
-        while(gradeBucketIt.hasNext())
-        {
-            Terms.Bucket gradeBucket = gradeBucketIt.next();
-            System.out.println(gradeBucket.getKey() + "有" + gradeBucket.getDocCount() +"个。");
-            i++;
-        }
-        System.out.println("key="+i);
-//        System.out.println(response.getHits().getAt(0).getSource());
+//        StringTerms st = (StringTerms) response.getAggregations().getAsMap().getOrDefault("kw",null);
+//        Iterator<Terms.Bucket> gradeBucketIt = st.getBuckets().iterator();
+//        int i = 0;
+//        while(gradeBucketIt.hasNext())
+//        {
+//            Terms.Bucket gradeBucket = gradeBucketIt.next();
+//            System.out.println(gradeBucket.getKey() + "有" + gradeBucket.getDocCount() +"个。");
+//            i++;
+//        }
+//        System.out.println("key="+i);
+////        System.out.println(response.getHits().getAt(0).getSource());
 //        System.out.println(response.getHits().getAt(1).getSource());
 //        System.out.println(response.getHits().getAt(0).getHighlightFields());
         client.close();

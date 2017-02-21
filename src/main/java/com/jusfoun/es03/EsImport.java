@@ -1,7 +1,9 @@
 package com.jusfoun.es03;
 
+import com.jusfoun.commons.IdGen;
 import com.jusfoun.es01.MyTransportClient;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.Client;
 
 import java.io.*;
@@ -31,6 +33,7 @@ public class EsImport {
             BulkRequestBuilder bulkRequest = client.prepareBulk();
             while (((json = br.readLine()) != null)) {
                 bulkRequest.add(client.prepareIndex(index, type).setSource(json));
+                bulkRequest.add(new UpdateRequest(index, type, IdGen.uuid()).doc(json).docAsUpsert(true));
                 //每一千条提交一次
                 if (count% 1000==0) {
                     bulkRequest.execute().actionGet();
